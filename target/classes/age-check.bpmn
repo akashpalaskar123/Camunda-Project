@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1dn55rg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:process id="age-check-module" name="age-check" isExecutable="true" camunda:historyTimeToLive="1000">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0gx1t64</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="user-task" name="user task input" camunda:assignee="manager">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="age" label="Age" type="long" defaultValue="0" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0gx1t64</bpmn:incoming>
+      <bpmn:outgoing>Flow_179gf4j</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0gx1t64" sourceRef="StartEvent_1" targetRef="user-task" />
+    <bpmn:exclusiveGateway id="age-check" name="age check">
+      <bpmn:incoming>Flow_179gf4j</bpmn:incoming>
+      <bpmn:outgoing>aduld-age</bpmn:outgoing>
+      <bpmn:outgoing>old-age</bpmn:outgoing>
+      <bpmn:outgoing>child-age</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="aduld-age" name="aduld-age" sourceRef="age-check" targetRef="adult-age">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">age &gt; 17 &amp;&amp; age &lt; 50 ;</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="adult-age" name="adult age" camunda:assignee="adult">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="adultAge" label="i am adult and my age is " type="long" defaultValue="${age}" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>aduld-age</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hwg6dc</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="old-age" name="old-age" sourceRef="age-check" targetRef="Activity_16v5iys">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">age &gt; 50;</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="child-age" name="child-age" sourceRef="age-check" targetRef="child-age1">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">age &lt; 18 ;</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="child-age1" name="child age" camunda:assignee="child">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="childAge" label="i am child and my age is " type="long" defaultValue="${age}" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>child-age</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sjig2p</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_16v5iys" name="old age" camunda:assignee="old">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="oldAge" label=" i am old and my age is " type="long" defaultValue="${age}" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>old-age</bpmn:incoming>
+      <bpmn:outgoing>Flow_1l4z4yh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_179gf4j" sourceRef="user-task" targetRef="age-check" />
+    <bpmn:endEvent id="Event_0kpis0m">
+      <bpmn:incoming>Flow_1hwg6dc</bpmn:incoming>
+      <bpmn:incoming>Flow_1l4z4yh</bpmn:incoming>
+      <bpmn:incoming>Flow_1sjig2p</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1hwg6dc" sourceRef="adult-age" targetRef="Event_0kpis0m" />
+    <bpmn:sequenceFlow id="Flow_1l4z4yh" sourceRef="Activity_16v5iys" targetRef="Event_0kpis0m" />
+    <bpmn:sequenceFlow id="Flow_1sjig2p" sourceRef="child-age1" targetRef="Event_0kpis0m" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="age-check-module">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="229" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0iqdqnt_di" bpmnElement="user-task">
+        <dc:Bounds x="240" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_12ppiq2_di" bpmnElement="age-check" isMarkerVisible="true">
+        <dc:Bounds x="425" y="222" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="384" y="213" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0kpis0m_di" bpmnElement="Event_0kpis0m">
+        <dc:Bounds x="842" y="229" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xyzrrj_di" bpmnElement="adult-age">
+        <dc:Bounds x="550" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_070ld7e_di" bpmnElement="Activity_16v5iys">
+        <dc:Bounds x="550" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_079964j_di" bpmnElement="child-age1">
+        <dc:Bounds x="550" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0gx1t64_di" bpmnElement="Flow_0gx1t64">
+        <di:waypoint x="188" y="247" />
+        <di:waypoint x="240" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_179gf4j_di" bpmnElement="Flow_179gf4j">
+        <di:waypoint x="340" y="247" />
+        <di:waypoint x="425" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0in5t6u_di" bpmnElement="aduld-age">
+        <di:waypoint x="475" y="247" />
+        <di:waypoint x="550" y="247" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="475" y="229" width="50" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mppy8f_di" bpmnElement="old-age">
+        <di:waypoint x="450" y="222" />
+        <di:waypoint x="450" y="120" />
+        <di:waypoint x="550" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="481" y="103" width="37" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sd2ybt_di" bpmnElement="child-age">
+        <di:waypoint x="450" y="272" />
+        <di:waypoint x="450" y="360" />
+        <di:waypoint x="550" y="360" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="477" y="343" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hwg6dc_di" bpmnElement="Flow_1hwg6dc">
+        <di:waypoint x="650" y="247" />
+        <di:waypoint x="842" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1sjig2p_di" bpmnElement="Flow_1sjig2p">
+        <di:waypoint x="650" y="360" />
+        <di:waypoint x="736" y="360" />
+        <di:waypoint x="736" y="247" />
+        <di:waypoint x="842" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l4z4yh_di" bpmnElement="Flow_1l4z4yh">
+        <di:waypoint x="650" y="120" />
+        <di:waypoint x="736" y="120" />
+        <di:waypoint x="736" y="247" />
+        <di:waypoint x="842" y="247" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

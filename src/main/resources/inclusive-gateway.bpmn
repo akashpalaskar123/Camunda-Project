@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1csi1ub" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:process id="Process_0wphvzf" isExecutable="true" camunda:historyTimeToLive="10000">
+    <bpmn:startEvent id="StartEvent_1" name="ticked-created">
+      <bpmn:outgoing>Flow_1ki3b26</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1ki3b26" sourceRef="StartEvent_1" targetRef="check-order-details" />
+    <bpmn:userTask id="check-order-details" name="check-order-details" camunda:assignee="manager">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="payment" label="is payment reviced or not ?" type="boolean" defaultValue="true" />
+          <camunda:formField id="order" label="is order recived or not " type="boolean" defaultValue="true" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ki3b26</bpmn:incoming>
+      <bpmn:outgoing>Flow_0no9jef</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:inclusiveGateway id="Gateway_0kc3h6p" name="check">
+      <bpmn:incoming>Flow_0no9jef</bpmn:incoming>
+      <bpmn:outgoing>payment-check</bpmn:outgoing>
+      <bpmn:outgoing>order-recived</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0no9jef" sourceRef="check-order-details" targetRef="Gateway_0kc3h6p" />
+    <bpmn:sequenceFlow id="payment-check" name="payment-check" sourceRef="Gateway_0kc3h6p" targetRef="Activity_0c83gml">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">payment == false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="order-recived" name="order-recived" sourceRef="Gateway_0kc3h6p" targetRef="Activity_0ai5q9f">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="javascript">order == false;</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_0c83gml" name="cash-paid" camunda:assignee="manager">
+      <bpmn:incoming>payment-check</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e85ort</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_0ai5q9f" name="recived-order" camunda:assignee="manager">
+      <bpmn:incoming>order-recived</bpmn:incoming>
+      <bpmn:outgoing>Flow_02225c9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:inclusiveGateway id="Gateway_0f8357s" name="ticket-resolved">
+      <bpmn:incoming>Flow_0e85ort</bpmn:incoming>
+      <bpmn:incoming>Flow_02225c9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0lmk2lt</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0e85ort" sourceRef="Activity_0c83gml" targetRef="Gateway_0f8357s" />
+    <bpmn:sequenceFlow id="Flow_02225c9" sourceRef="Activity_0ai5q9f" targetRef="Gateway_0f8357s" />
+    <bpmn:endEvent id="Event_0fnlum3" name="ticked-closed">
+      <bpmn:incoming>Flow_0lmk2lt</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0lmk2lt" sourceRef="Gateway_0f8357s" targetRef="Event_0fnlum3" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0wphvzf">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="164" y="202" width="69" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y2yj9o_di" bpmnElement="check-order-details">
+        <dc:Bounds x="290" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0kc3h6p_di" bpmnElement="Gateway_0kc3h6p">
+        <dc:Bounds x="475" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="565" y="167" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bjnvo5_di" bpmnElement="Activity_0c83gml">
+        <dc:Bounds x="590" y="40" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15a33k0_di" bpmnElement="Activity_0ai5q9f">
+        <dc:Bounds x="590" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0f8357s_di" bpmnElement="Gateway_0f8357s">
+        <dc:Bounds x="795" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="706" y="167" width="71" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fnlum3_di" bpmnElement="Event_0fnlum3">
+        <dc:Bounds x="952" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="939" y="202" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1ki3b26_di" bpmnElement="Flow_1ki3b26">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="290" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0no9jef_di" bpmnElement="Flow_0no9jef">
+        <di:waypoint x="390" y="177" />
+        <di:waypoint x="475" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v77xme_di" bpmnElement="payment-check">
+        <di:waypoint x="500" y="152" />
+        <di:waypoint x="500" y="80" />
+        <di:waypoint x="590" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="478" y="113" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00goa34_di" bpmnElement="order-recived">
+        <di:waypoint x="500" y="202" />
+        <di:waypoint x="500" y="290" />
+        <di:waypoint x="590" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="483" y="243" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e85ort_di" bpmnElement="Flow_0e85ort">
+        <di:waypoint x="690" y="80" />
+        <di:waypoint x="820" y="80" />
+        <di:waypoint x="820" y="152" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02225c9_di" bpmnElement="Flow_02225c9">
+        <di:waypoint x="690" y="290" />
+        <di:waypoint x="820" y="290" />
+        <di:waypoint x="820" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lmk2lt_di" bpmnElement="Flow_0lmk2lt">
+        <di:waypoint x="845" y="177" />
+        <di:waypoint x="952" y="177" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
