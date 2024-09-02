@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="my-project-camunda" />
+        <module name="SpringOauth2Demo" />
         <module name="Flyway-Demo" />
         <module name="Testing" />
       </profile>
@@ -16,6 +17,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Flyway-Demo" options="-parameters" />
+      <module name="SpringOauth2Demo" options="-parameters" />
       <module name="Testing" options="-parameters" />
     </option>
   </component>

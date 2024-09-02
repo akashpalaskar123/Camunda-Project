@@ -4,10 +4,15 @@
     <bpmn:startEvent id="timer-event" name="timer-event">
       <bpmn:outgoing>Flow_0a9gly7</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_05zdvxl">
-        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 * * * * ?</bpmn:timeCycle>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:startEvent>
     <bpmn:userTask id="timer-verified" name="timer-verified">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="cronJob" label="cron_job" type="string" defaultValue="0 * * * * ?" />
+        </camunda:formData>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0a9gly7</bpmn:incoming>
       <bpmn:outgoing>Flow_1moulao</bpmn:outgoing>
     </bpmn:userTask>

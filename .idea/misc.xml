@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/../../../Testing/Testing/pom.xml" />
         <option value="$PROJECT_DIR$/../../../Flyway-Demo/Flyway-Demo/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../SpringOauth2Demo/SpringOauth2Demo/pom.xml" />
       </list>
     </option>
   </component>
